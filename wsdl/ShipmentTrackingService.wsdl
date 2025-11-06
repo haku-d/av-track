@@ -1,0 +1,1276 @@
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata"
+    xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex"
+    xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy"
+    xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract"
+    xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+    xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+    xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+    xmlns:tns="http://purolator.com/pws/service/v2"
+    xmlns:wsa10="http://www.w3.org/2005/08/addressing"
+    xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl"
+    xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" name="ShipmentTrackingService"
+    targetNamespace="http://purolator.com/pws/service/v2">
+    <wsdl:types>
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+            xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/"
+            attributeFormDefault="qualified" elementFormDefault="qualified"
+            targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/">
+            <xs:element name="anyType" nillable="true" type="xs:anyType" />
+            <xs:element name="anyURI" nillable="true" type="xs:anyURI" />
+            <xs:element name="base64Binary" nillable="true" type="xs:base64Binary" />
+            <xs:element name="boolean" nillable="true" type="xs:boolean" />
+            <xs:element name="byte" nillable="true" type="xs:byte" />
+            <xs:element name="dateTime" nillable="true" type="xs:dateTime" />
+            <xs:element name="decimal" nillable="true" type="xs:decimal" />
+            <xs:element name="double" nillable="true" type="xs:double" />
+            <xs:element name="float" nillable="true" type="xs:float" />
+            <xs:element name="int" nillable="true" type="xs:int" />
+            <xs:element name="long" nillable="true" type="xs:long" />
+            <xs:element name="QName" nillable="true" type="xs:QName" />
+            <xs:element name="short" nillable="true" type="xs:short" />
+            <xs:element name="string" nillable="true" type="xs:string" />
+            <xs:element name="unsignedByte" nillable="true" type="xs:unsignedByte" />
+            <xs:element name="unsignedInt" nillable="true" type="xs:unsignedInt" />
+            <xs:element name="unsignedLong" nillable="true" type="xs:unsignedLong" />
+            <xs:element name="unsignedShort" nillable="true" type="xs:unsignedShort" />
+            <xs:element name="char" nillable="true" type="tns:char" />
+            <xs:simpleType name="char">
+                <xs:restriction base="xs:int" />
+            </xs:simpleType>
+            <xs:element name="duration" nillable="true" type="tns:duration" />
+            <xs:simpleType name="duration">
+                <xs:restriction base="xs:duration">
+                    <xs:pattern value="\-?P(\d*D)?(T(\d*H)?(\d*M)?(\d*(\.\d*)?S)?)?" />
+                    <xs:minInclusive value="-P10675199DT2H48M5.4775808S" />
+                    <xs:maxInclusive value="P10675199DT2H48M5.4775807S" />
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:element name="guid" nillable="true" type="tns:guid" />
+            <xs:simpleType name="guid">
+                <xs:restriction base="xs:string">
+                    <xs:pattern
+                        value="[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}" />
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:attribute name="FactoryType" type="xs:QName" />
+            <xs:attribute name="Id" type="xs:ID" />
+            <xs:attribute name="Ref" type="xs:IDREF" />
+        </xs:schema>
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+            xmlns:tns="http://purolator.com/pws/datatypes/v2" elementFormDefault="qualified"
+            targetNamespace="http://purolator.com/pws/datatypes/v2">
+            <xs:complexType name="TrackingByPinsOrReferencesRequestContainer">
+                <xs:annotation>
+                    <xs:appinfo />
+                    <xs:documentation>TrackingByPinOrReferenceRequest</xs:documentation>
+                </xs:annotation>
+                <xs:complexContent mixed="false">
+                    <xs:extension base="tns:RequestContainer">
+                        <xs:sequence>
+                            <xs:element name="TrackingSearchCriteria" nillable="true"
+                                type="tns:TrackingDetailCriterion">
+                                <xs:annotation>
+                                    <xs:appinfo />
+                                    <xs:documentation>TrackingDetailCriterion -
+                                        TrackingDetailCriterion</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:extension>
+                </xs:complexContent>
+            </xs:complexType>
+            <xs:element name="TrackingByPinsOrReferencesRequestContainer" nillable="true"
+                type="tns:TrackingByPinsOrReferencesRequestContainer" />
+            <xs:complexType name="RequestContainer">
+                <xs:sequence />
+            </xs:complexType>
+            <xs:element name="RequestContainer" nillable="true" type="tns:RequestContainer" />
+            <xs:complexType name="TrackingDetailCriterion">
+                <xs:annotation>
+                    <xs:appinfo />
+                    <xs:documentation>TrackingDetailCriterion</xs:documentation>
+                </xs:annotation>
+                <xs:sequence>
+                    <xs:element name="searches" nillable="true" type="tns:ArrayOfsearch">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>PINs - PIN[]</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="TrackingDetailCriterion" nillable="true"
+                type="tns:TrackingDetailCriterion" />
+            <xs:complexType name="ArrayOfsearch">
+                <xs:sequence>
+                    <xs:element minOccurs="0" maxOccurs="unbounded" name="search" nillable="true"
+                        type="tns:search" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="ArrayOfsearch" nillable="true" type="tns:ArrayOfsearch" />
+            <xs:complexType name="search">
+                <xs:annotation>
+                    <xs:appinfo />
+                    <xs:documentation>TrackingPIN</xs:documentation>
+                </xs:annotation>
+                <xs:sequence>
+                    <xs:element name="trackingId" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>TrackingId - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="shipmentDateFrom" nillable="true"
+                        type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>ShipmentDateFrom - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="shipmentDateTo" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>ShipmentDateTo - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="pod" type="xs:boolean">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>POD - bool</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="shipmentView" type="xs:boolean">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>ShipmentView - bool</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="account" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>Account - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="destinationPostalZipCode" nillable="true"
+                        type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>DestinationPostalZipCode - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="eventSortOrder" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>EventSortOrder - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="search" nillable="true" type="tns:search" />
+            <xs:element name="TrackingByPinsOrReferencesRequest" nillable="true"
+                type="tns:TrackingByPinsOrReferencesRequestContainer" />
+            <xs:complexType name="RequestContext">
+                <xs:annotation>
+                    <xs:appinfo />
+                    <xs:documentation>RequestContext</xs:documentation>
+                </xs:annotation>
+                <xs:sequence>
+                    <xs:element name="Version" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>Version - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="Language" type="tns:Language">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>Language - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="GroupID" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>GroupID - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="RequestReference" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>RequestReference - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="UserToken" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>UserToken - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="RequestContext" nillable="true" type="tns:RequestContext" />
+            <xs:simpleType name="Language">
+                <xs:annotation>
+                    <xs:appinfo />
+                    <xs:documentation>Language - enum</xs:documentation>
+                </xs:annotation>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="en">
+                        <xs:annotation>
+                            <xs:documentation>en</xs:documentation>
+                        </xs:annotation>
+                    </xs:enumeration>
+                    <xs:enumeration value="fr">
+                        <xs:annotation>
+                            <xs:documentation>fr</xs:documentation>
+                        </xs:annotation>
+                    </xs:enumeration>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:element name="Language" nillable="true" type="tns:Language" />
+            <xs:complexType name="TrackingByPinsOrReferencesResponseContainer">
+                <xs:annotation>
+                    <xs:appinfo />
+                    <xs:documentation>TrackingByPinsOrReferencesResponse</xs:documentation>
+                </xs:annotation>
+                <xs:complexContent mixed="false">
+                    <xs:extension base="tns:ResponseContainer">
+                        <xs:sequence>
+                            <xs:element minOccurs="0" name="SearchResults" nillable="true"
+                                type="tns:ArrayOfSearchResult">
+                                <xs:annotation>
+                                    <xs:appinfo />
+                                    <xs:documentation>TrackingDetail - TrackingDetail</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:extension>
+                </xs:complexContent>
+            </xs:complexType>
+            <xs:element name="TrackingByPinsOrReferencesResponseContainer" nillable="true"
+                type="tns:TrackingByPinsOrReferencesResponseContainer" />
+            <xs:complexType name="ResponseContainer">
+                <xs:sequence>
+                    <xs:element name="ResponseInformation" nillable="true"
+                        type="tns:ResponseInformation">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>ResponseInformation - ResponseInformation</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="ResponseContainer" nillable="true" type="tns:ResponseContainer" />
+            <xs:complexType name="ResponseInformation">
+                <xs:annotation>
+                    <xs:appinfo />
+                    <xs:documentation>ResponseInformation</xs:documentation>
+                </xs:annotation>
+                <xs:sequence>
+                    <xs:element name="Errors" nillable="true" type="tns:ArrayOfError">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>Errors - Error[]</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="InformationalMessages" nillable="true"
+                        type="tns:ArrayOfInformationalMessage">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>InformationalMessages - InformationalMessage[]</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="ResponseInformation" nillable="true" type="tns:ResponseInformation" />
+            <xs:complexType name="ArrayOfError">
+                <xs:sequence>
+                    <xs:element minOccurs="0" maxOccurs="unbounded" name="Error" nillable="true"
+                        type="tns:Error" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="ArrayOfError" nillable="true" type="tns:ArrayOfError" />
+            <xs:complexType name="Error">
+                <xs:annotation>
+                    <xs:appinfo />
+                    <xs:documentation>Error</xs:documentation>
+                </xs:annotation>
+                <xs:sequence>
+                    <xs:element name="Code" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>Code - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="Description" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>Description - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="AdditionalInformation" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>AdditionalInformation - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="Error" nillable="true" type="tns:Error" />
+            <xs:complexType name="ArrayOfInformationalMessage">
+                <xs:sequence>
+                    <xs:element minOccurs="0" maxOccurs="unbounded" name="InformationalMessage"
+                        nillable="true" type="tns:InformationalMessage" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="ArrayOfInformationalMessage" nillable="true"
+                type="tns:ArrayOfInformationalMessage" />
+            <xs:complexType name="InformationalMessage">
+                <xs:annotation>
+                    <xs:appinfo />
+                    <xs:documentation>InformationalMessage</xs:documentation>
+                </xs:annotation>
+                <xs:sequence>
+                    <xs:element name="Code" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>Code - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="Message" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>Message - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="InformationalMessage" nillable="true" type="tns:InformationalMessage" />
+            <xs:complexType name="ArrayOfSearchResult">
+                <xs:sequence>
+                    <xs:element minOccurs="0" maxOccurs="unbounded" name="SearchResult"
+                        nillable="true" type="tns:SearchResult" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="ArrayOfSearchResult" nillable="true" type="tns:ArrayOfSearchResult" />
+            <xs:complexType name="SearchResult">
+                <xs:annotation>
+                    <xs:appinfo />
+                    <xs:documentation>TrackingDetail</xs:documentation>
+                </xs:annotation>
+                <xs:sequence>
+                    <xs:element name="trackingId" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>TrackingId - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="shipmentDateFrom" nillable="true"
+                        type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>ShipmentDateFrom - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="shipmentDateTo" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>ShipmentDateTo - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="status" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>ShipmentDateFrom - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="type" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>Type - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="shipmentErrors" nillable="true"
+                        type="tns:ArrayOfshipmentError">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>errors</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="Shipment" nillable="true"
+                        type="tns:ShipmentInfo">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>Shipment</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="SearchResult" nillable="true" type="tns:SearchResult" />
+            <xs:complexType name="ArrayOfshipmentError">
+                <xs:sequence>
+                    <xs:element minOccurs="0" maxOccurs="unbounded" name="shipmentError"
+                        nillable="true" type="tns:shipmentError" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="ArrayOfshipmentError" nillable="true" type="tns:ArrayOfshipmentError" />
+            <xs:complexType name="shipmentError">
+                <xs:annotation>
+                    <xs:appinfo />
+                    <xs:documentation>Tracking Errors</xs:documentation>
+                </xs:annotation>
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="code" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>code - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="description" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>description - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="shipmentError" nillable="true" type="tns:shipmentError" />
+            <xs:complexType name="ShipmentInfo">
+                <xs:annotation>
+                    <xs:appinfo />
+                    <xs:documentation>Shipment</xs:documentation>
+                </xs:annotation>
+                <xs:sequence>
+                    <xs:element name="shipmentPin" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>ShipmentPin - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="status" nillable="true" type="tns:Status">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>Status[]</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="shipmentCreated" nillable="true"
+                        type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>shipmentCreated - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="pieceTotalCount" type="xs:int">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>pieceTotalCount - int</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="details" nillable="true"
+                        type="tns:ShipmentDetails">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>details - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="packages" nillable="true" type="tns:ArrayOfpackage">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>package</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="ShipmentInfo" nillable="true" type="tns:ShipmentInfo" />
+            <xs:complexType name="Status">
+                <xs:annotation>
+                    <xs:appinfo />
+                    <xs:documentation>Status</xs:documentation>
+                </xs:annotation>
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="code" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>code - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="description" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>code - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="Status" nillable="true" type="tns:Status" />
+            <xs:complexType name="ShipmentDetails">
+                <xs:annotation>
+                    <xs:appinfo />
+                    <xs:documentation>ShipmentDetails</xs:documentation>
+                </xs:annotation>
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="reference1" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>reference1 - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="reference2" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>reference2 - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="reference3" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>reference3 - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="reference4" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>reference4 - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="reference5" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>reference5 - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="returnShipment" nillable="true"
+                        type="xs:boolean">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>returnShipment - bool</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="product" nillable="true" type="tns:Status">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>product[]</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="services" nillable="true"
+                        type="tns:ArrayOfservice">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>services[]</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="shipper" nillable="true"
+                        type="tns:TrackingAddress">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>shipper</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="receiver" nillable="true"
+                        type="tns:TrackingAddress">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>receiver</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="note" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>note - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="weight" nillable="true" type="tns:Weight">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>weight - Weight</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="ShipmentDetails" nillable="true" type="tns:ShipmentDetails" />
+            <xs:complexType name="ArrayOfservice">
+                <xs:sequence>
+                    <xs:element minOccurs="0" maxOccurs="unbounded" name="service" nillable="true"
+                        type="tns:service" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="ArrayOfservice" nillable="true" type="tns:ArrayOfservice" />
+            <xs:complexType name="service">
+                <xs:annotation>
+                    <xs:appinfo />
+                    <xs:documentation>Services</xs:documentation>
+                </xs:annotation>
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="name" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>name - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="value" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>value - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="description" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>description - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="service" nillable="true" type="tns:service" />
+            <xs:complexType name="TrackingAddress">
+                <xs:annotation>
+                    <xs:appinfo />
+                    <xs:documentation>TrackingAddress</xs:documentation>
+                </xs:annotation>
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="streetAddress1" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>streetAddress1 - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="streetAddress2" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>streetAddress2 - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="streetAddress3" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>streetAddress3 - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="city" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>city - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="provinceState" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>provinceState - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="countryCode" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>countryCode - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="postalZipCode" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>postalZipCode - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="TrackingAddress" nillable="true" type="tns:TrackingAddress" />
+            <xs:complexType name="Weight">
+                <xs:annotation>
+                    <xs:appinfo />
+                    <xs:documentation>Weight</xs:documentation>
+                </xs:annotation>
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="unit" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>WeightUnit - WeightUnit</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="value" nillable="true" type="xs:decimal">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>Value - decimal</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="Weight" nillable="true" type="tns:Weight" />
+            <xs:complexType name="ArrayOfpackage">
+                <xs:sequence>
+                    <xs:element minOccurs="0" maxOccurs="unbounded" name="package" nillable="true"
+                        type="tns:package" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="ArrayOfpackage" nillable="true" type="tns:ArrayOfpackage" />
+            <xs:complexType name="package">
+                <xs:annotation>
+                    <xs:appinfo />
+                    <xs:documentation>TrackingPackageInfo</xs:documentation>
+                </xs:annotation>
+                <xs:sequence>
+                    <xs:element name="pin" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>pin - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="status" nillable="true"
+                        type="tns:TrackingPackageStatus">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>status - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="estimatedDeliveryDate" nillable="true"
+                        type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>estimatedDeliveryDate - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="transitDays" nillable="true" type="xs:int">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>transitDays - int</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="packageCreated" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>packageCreated - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="packageReceived" nillable="true"
+                        type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>packageReceived - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="lastEvent" nillable="true" type="tns:event">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>lastEvent</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="details" nillable="true"
+                        type="tns:TrackingPackageDetail">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>lastEvent</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="events" nillable="true" type="tns:ArrayOfevent">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>events</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="package" nillable="true" type="tns:package" />
+            <xs:complexType name="TrackingPackageStatus">
+                <xs:annotation>
+                    <xs:appinfo />
+                    <xs:documentation>TrackingPackageStatus</xs:documentation>
+                </xs:annotation>
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="code" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>code - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="description" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>description - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="subCode" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>subCode - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="subDescription" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>subDescription - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="TrackingPackageStatus" nillable="true"
+                type="tns:TrackingPackageStatus" />
+            <xs:complexType name="event">
+                <xs:annotation>
+                    <xs:appinfo />
+                    <xs:documentation>TrackingPackageEvent</xs:documentation>
+                </xs:annotation>
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="dateTime" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>dateTime - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="code" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>code - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="reasonCode" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>reasonCode - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="description" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>description - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="terminal" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>terminal - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="routeId" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>routeId - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="location" nillable="true"
+                        type="tns:TrackingPackageLocation">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>location</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="x12" nillable="true"
+                        type="tns:TrackingPackageAdditionalInfo">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>location</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="xreference" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>xreference - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="event" nillable="true" type="tns:event" />
+            <xs:complexType name="TrackingPackageLocation">
+                <xs:annotation>
+                    <xs:appinfo />
+                    <xs:documentation>TrackingAddress</xs:documentation>
+                </xs:annotation>
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="StreetAddress1" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>streetAddress1 - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="StreetAddress2" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>streetAddress2 - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="City" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>city - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="provinceState" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>provinceState - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="CountryCode" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>countryCode - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="PostalCode" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>postalCode - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="TrackingPackageLocation" nillable="true"
+                type="tns:TrackingPackageLocation" />
+            <xs:complexType name="TrackingPackageAdditionalInfo">
+                <xs:annotation>
+                    <xs:appinfo />
+                    <xs:documentation>TrackingPackageAdditionalInfo</xs:documentation>
+                </xs:annotation>
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="AT701" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>AT701 - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="AT702" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>AT702 - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="TrackingPackageAdditionalInfo" nillable="true"
+                type="tns:TrackingPackageAdditionalInfo" />
+            <xs:complexType name="TrackingPackageDetail">
+                <xs:annotation>
+                    <xs:appinfo />
+                    <xs:documentation>TrackingPackageDetail</xs:documentation>
+                </xs:annotation>
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="references" nillable="true"
+                        type="tns:TrackingReferenceOfstring">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>references</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="services" nillable="true"
+                        type="tns:ArrayOfservice">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>services - Service[]</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="weight" nillable="true"
+                        type="tns:TrackingPackageWeight">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>weight</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="holdForPickupLocationId" nillable="true"
+                        type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>holdForPickupLocationId - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="deliveryDetails" nillable="true"
+                        type="tns:TrackingPackageDeliveryDetails">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>deliveryDetails</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="TrackingPackageDetail" nillable="true"
+                type="tns:TrackingPackageDetail" />
+            <xs:complexType name="TrackingReferenceOfstring">
+                <xs:annotation>
+                    <xs:appinfo>
+                        <GenericType xmlns="http://schemas.microsoft.com/2003/10/Serialization/"
+                            Name="TrackingReferenceOf{0}{#}"
+                            Namespace="http://purolator.com/pws/datatypes/v2">
+                            <GenericParameter Name="string"
+                                Namespace="http://www.w3.org/2001/XMLSchema" />
+                        </GenericType>
+                    </xs:appinfo>
+                </xs:annotation>
+                <xs:sequence>
+                    <xs:element minOccurs="0" maxOccurs="unbounded" name="reference" nillable="true"
+                        type="xs:string" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="TrackingReferenceOfstring" nillable="true"
+                type="tns:TrackingReferenceOfstring" />
+            <xs:complexType name="TrackingPackageWeight">
+                <xs:annotation>
+                    <xs:appinfo />
+                    <xs:documentation>TrackingPackageWeight</xs:documentation>
+                </xs:annotation>
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="declaredUnit" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>WeightUnit - WeightUnit</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="declaredValue" nillable="true" type="xs:decimal">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>Value - decimal</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="actualUnit" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>WeightUnit - WeightUnit</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="actualValue" nillable="true" type="xs:decimal">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>Value - decimal</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="TrackingPackageWeight" nillable="true"
+                type="tns:TrackingPackageWeight" />
+            <xs:complexType name="TrackingPackageDeliveryDetails">
+                <xs:annotation>
+                    <xs:appinfo />
+                    <xs:documentation>TrackingPackageDeliveryDetails</xs:documentation>
+                </xs:annotation>
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="name" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>name - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="deliveryDateTime" nillable="true"
+                        type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>deliveryDateTime - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="image" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>image - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="locationCode" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>locationCode - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="locationDescription" nillable="true"
+                        type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>locationDescription - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="TrackingPackageDeliveryDetails" nillable="true"
+                type="tns:TrackingPackageDeliveryDetails" />
+            <xs:complexType name="ArrayOfevent">
+                <xs:sequence>
+                    <xs:element minOccurs="0" maxOccurs="unbounded" name="event" nillable="true"
+                        type="tns:event" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="ArrayOfevent" nillable="true" type="tns:ArrayOfevent" />
+            <xs:element name="TrackingByPinsOrReferencesResponse" nillable="true"
+                type="tns:TrackingByPinsOrReferencesResponseContainer" />
+            <xs:complexType name="ResponseContext">
+                <xs:annotation>
+                    <xs:appinfo />
+                    <xs:documentation>ResponseContext</xs:documentation>
+                </xs:annotation>
+                <xs:sequence>
+                    <xs:element name="ResponseReference" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo />
+                            <xs:documentation>ResponseReference - string</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="ResponseContext" nillable="true" type="tns:ResponseContext" />
+        </xs:schema>
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+            xmlns:tns="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation"
+            elementFormDefault="qualified"
+            targetNamespace="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation">
+            <xs:import
+                namespace="http://schemas.datacontract.org/2004/07/Microsoft.Practices.EnterpriseLibrary.Validation.Integration.WCF" />
+            <xs:complexType name="ValidationFault">
+                <xs:annotation>
+                    <xs:appinfo />
+                    <xs:documentation>This class is used to return information to a WCF client when
+                        validation fails on a service parameter.</xs:documentation>
+                </xs:annotation>
+                <xs:sequence>
+                    <xs:element
+                        xmlns:q1="http://schemas.datacontract.org/2004/07/Microsoft.Practices.EnterpriseLibrary.Validation.Integration.WCF"
+                        minOccurs="0" name="Details" nillable="true"
+                        type="q1:ArrayOfValidationDetail">
+                        <xs:annotation>
+                            <xs:appinfo>
+                                <Surrogate
+                                    xmlns="http://schemas.microsoft.com/2003/10/Serialization/"
+                                    xmlns:i="http://www.w3.org/2001/XMLSchema-instance"
+                                    xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/"
+                                    xmlns:d1p1="XmlCommentsExporter.Annotation" z:Id="1"
+                                    i:type="d1p1:Annotation">
+                                    <d1p1:Text z:Id="2" />
+                                </Surrogate>
+                            </xs:appinfo>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="ValidationFault" nillable="true" type="tns:ValidationFault" />
+        </xs:schema>
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+            xmlns:tns="http://schemas.datacontract.org/2004/07/Microsoft.Practices.EnterpriseLibrary.Validation.Integration.WCF"
+            elementFormDefault="qualified"
+            targetNamespace="http://schemas.datacontract.org/2004/07/Microsoft.Practices.EnterpriseLibrary.Validation.Integration.WCF">
+            <xs:complexType name="ArrayOfValidationDetail">
+                <xs:sequence>
+                    <xs:element minOccurs="0" maxOccurs="unbounded" name="ValidationDetail"
+                        nillable="true" type="tns:ValidationDetail" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="ArrayOfValidationDetail" nillable="true"
+                type="tns:ArrayOfValidationDetail" />
+            <xs:complexType name="ValidationDetail">
+                <xs:annotation>
+                    <xs:appinfo />
+                    <xs:documentation>This class holds the results of a single validation.
+                        Effectively, it's the same as a ValidationResult, but creating a separate
+                        class allows us to mark up a DataContract with impunity.</xs:documentation>
+                </xs:annotation>
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="Key" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo>
+                                <Surrogate
+                                    xmlns="http://schemas.microsoft.com/2003/10/Serialization/"
+                                    xmlns:i="http://www.w3.org/2001/XMLSchema-instance"
+                                    xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/"
+                                    xmlns:d1p1="XmlCommentsExporter.Annotation" z:Id="1"
+                                    i:type="d1p1:Annotation">
+                                    <d1p1:Text z:Id="2">Get or set a name describing the location of
+                                the validation result.</d1p1:Text>
+                                </Surrogate>
+                            </xs:appinfo>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo>
+                                <Surrogate
+                                    xmlns="http://schemas.microsoft.com/2003/10/Serialization/"
+                                    xmlns:i="http://www.w3.org/2001/XMLSchema-instance"
+                                    xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/"
+                                    xmlns:d1p1="XmlCommentsExporter.Annotation" z:Id="1"
+                                    i:type="d1p1:Annotation">
+                                    <d1p1:Text z:Id="2">Get or set a message describing the
+                                validation failure.</d1p1:Text>
+                                </Surrogate>
+                            </xs:appinfo>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="Tag" nillable="true" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo>
+                                <Surrogate
+                                    xmlns="http://schemas.microsoft.com/2003/10/Serialization/"
+                                    xmlns:i="http://www.w3.org/2001/XMLSchema-instance"
+                                    xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/"
+                                    xmlns:d1p1="XmlCommentsExporter.Annotation" z:Id="1"
+                                    i:type="d1p1:Annotation">
+                                    <d1p1:Text z:Id="2">Get or set a value characterizing the fault.</d1p1:Text>
+                                </Surrogate>
+                            </xs:appinfo>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="ValidationDetail" nillable="true" type="tns:ValidationDetail" />
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="TrackingByPinsOrReferencesRequest">
+        <wsdl:part xmlns:q1="http://purolator.com/pws/datatypes/v2"
+            name="TrackingByPinsOrReferencesRequest" element="q1:TrackingByPinsOrReferencesRequest" />
+    </wsdl:message>
+    <wsdl:message name="TrackingByPinsOrReferencesRequest_Headers">
+        <wsdl:part xmlns:q2="http://purolator.com/pws/datatypes/v2" name="RequestContext"
+            element="q2:RequestContext" />
+    </wsdl:message>
+    <wsdl:message name="TrackingByPinsOrReferencesResponse">
+        <wsdl:part xmlns:q3="http://purolator.com/pws/datatypes/v2"
+            name="TrackingByPinsOrReferencesResponse"
+            element="q3:TrackingByPinsOrReferencesResponse" />
+    </wsdl:message>
+    <wsdl:message name="TrackingByPinsOrReferencesResponse_Headers">
+        <wsdl:part xmlns:q4="http://purolator.com/pws/datatypes/v2" name="ResponseContext"
+            element="q4:ResponseContext" />
+    </wsdl:message>
+    <wsdl:message
+        name="ShipmentTrackingServiceContract_TrackingByPinsOrReferences_ValidationFaultFault_FaultMessage">
+        <wsdl:part
+            xmlns:q5="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation"
+            name="detail" element="q5:ValidationFault" />
+    </wsdl:message>
+    <wsdl:portType name="ShipmentTrackingServiceContract">
+        <wsdl:documentation>Service Contract Class - ShipmentTrackingServiceContract</wsdl:documentation>
+        <wsdl:operation name="TrackingByPinsOrReferences">
+            <wsdl:documentation>Tracking By Pins or References @param request
+                TrackingByPinsOrReferencesRequest @return TrackingByPinsOrReferencesResponse</wsdl:documentation>
+            <wsdl:input wsaw:Action="http://purolator.com/pws/service/v2/TrackingByPinsOrReferences"
+                name="TrackingByPinsOrReferencesRequest"
+                message="tns:TrackingByPinsOrReferencesRequest" />
+            <wsdl:output
+                wsaw:Action="http://purolator.com/pws/service/v2/ShipmentTrackingServiceContract/TrackingByPinsOrReferencesResponse"
+                name="TrackingByPinsOrReferencesResponse"
+                message="tns:TrackingByPinsOrReferencesResponse" />
+            <wsdl:fault
+                wsaw:Action="http://purolator.com/pws/service/v2/ShipmentTrackingServiceContract/TrackingByPinsOrReferencesValidationFaultFault"
+                name="ValidationFaultFault"
+                message="tns:ShipmentTrackingServiceContract_TrackingByPinsOrReferences_ValidationFaultFault_FaultMessage" />
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="ShipmentTrackingServiceEndpoint" type="tns:ShipmentTrackingServiceContract">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+        <wsdl:operation name="TrackingByPinsOrReferences">
+            <soap:operation
+                soapAction="http://purolator.com/pws/service/v2/TrackingByPinsOrReferences"
+                style="document" />
+            <wsdl:input name="TrackingByPinsOrReferencesRequest">
+                <soap:header message="tns:TrackingByPinsOrReferencesRequest_Headers"
+                    part="RequestContext" use="literal" />
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output name="TrackingByPinsOrReferencesResponse">
+                <soap:header message="tns:TrackingByPinsOrReferencesResponse_Headers"
+                    part="ResponseContext" use="literal" />
+                <soap:body use="literal" />
+            </wsdl:output>
+            <wsdl:fault name="ValidationFaultFault">
+                <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+            </wsdl:fault>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="ShipmentTrackingService">
+        <wsdl:port name="ShipmentTrackingServiceEndpoint"
+            binding="tns:ShipmentTrackingServiceEndpoint">
+            <soap:address
+                location="https://webservices.purolator.com/EWS/v2/ShipmentTracking/ShipmentTrackingService.asmx" />
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

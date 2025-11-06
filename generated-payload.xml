@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:typ="http://purolator.com/pws/datatypes/v2">
+    <soapenv:Header>
+        <typ:RequestContext>
+            <typ:Version>2.0</typ:Version>
+            <typ:Language>en</typ:Language>
+            <typ:GroupID>e-tracking</typ:GroupID>
+            <typ:RequestReference>887f4695-8cb4-4c83-a781-97fc77193a85</typ:RequestReference>
+            <typ:UserToken>e9da777155cc44afa8611cb7b6759c6a</typ:UserToken>
+        </typ:RequestContext>
+    </soapenv:Header>
+    <soapenv:Body>
+        <typ:TrackingByPinsOrReferencesRequest>
+            <typ:TrackingSearchCriteria>
+                <typ:searches>
+                    <typ:search>
+                        <typ:trackingId>335701264889</typ:trackingId>
+                    </typ:search>
+                    <typ:search>
+                        <typ:trackingId>335702383951</typ:trackingId>
+                    </typ:search>
+                </typ:searches>
+            </typ:TrackingSearchCriteria>
+        </typ:TrackingByPinsOrReferencesRequest>
+    </soapenv:Body>
+</soapenv:Envelope>
+

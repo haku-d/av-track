@@ -1,0 +1,268 @@
+{
+  "info": {
+    "name": "Purolator Shipment Tracking API",
+    "description": "REST API endpoints for Purolator Shipment Tracking Service",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "testPin",
+      "value": "329012345678",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health & Service",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/tracking/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["tracking", "health"]
+            },
+            "description": "Check if the tracking service is healthy and properly configured"
+          }
+        },
+        {
+          "name": "Service Description",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/tracking/describe",
+              "host": ["{{baseUrl}}"],
+              "path": ["tracking", "describe"]
+            },
+            "description": "Get WSDL service description"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Track by PIN",
+      "item": [
+        {
+          "name": "Track Single PIN (Basic)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/tracking/pin/{{testPin}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["tracking", "pin", "{{testPin}}"]
+            },
+            "description": "Track a single shipment by PIN number"
+          }
+        },
+        {
+          "name": "Track Single PIN (with POD)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/tracking/pin/{{testPin}}?pod=true&shipmentView=true",
+              "host": ["{{baseUrl}}"],
+              "path": ["tracking", "pin", "{{testPin}}"],
+              "query": [
+                {
+                  "key": "pod",
+                  "value": "true",
+                  "description": "Include Proof of Delivery"
+                },
+                {
+                  "key": "shipmentView",
+                  "value": "true",
+                  "description": "Include detailed shipment view"
+                }
+              ]
+            },
+            "description": "Track a single shipment with Proof of Delivery and detailed view"
+          }
+        },
+        {
+          "name": "Track PIN with Date Range",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/tracking/pin/{{testPin}}?shipmentDateFrom=2024-01-01&shipmentDateTo=2024-12-31",
+              "host": ["{{baseUrl}}"],
+              "path": ["tracking", "pin", "{{testPin}}"],
+              "query": [
+                {
+                  "key": "shipmentDateFrom",
+                  "value": "2024-01-01",
+                  "description": "Start date (YYYY-MM-DD)"
+                },
+                {
+                  "key": "shipmentDateTo",
+                  "value": "2024-12-31",
+                  "description": "End date (YYYY-MM-DD)"
+                }
+              ]
+            },
+            "description": "Track a shipment within a specific date range"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Track Multiple",
+      "item": [
+        {
+          "name": "Track Multiple Shipments",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"trackingIds\": [\"329012345678\", \"329012345679\"],\n  \"pod\": true,\n  \"shipmentView\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/tracking/track",
+              "host": ["{{baseUrl}}"],
+              "path": ["tracking", "track"]
+            },
+            "description": "Track multiple shipments in a single request"
+          }
+        },
+        {
+          "name": "Track with All Options",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"trackingIds\": [\"329012345678\"],\n  \"shipmentDateFrom\": \"2024-01-01\",\n  \"shipmentDateTo\": \"2024-12-31\",\n  \"pod\": true,\n  \"shipmentView\": true,\n  \"account\": \"1234567\",\n  \"destinationPostalZipCode\": \"M5V3A8\",\n  \"eventSortOrder\": \"DESC\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/tracking/track",
+              "host": ["{{baseUrl}}"],
+              "path": ["tracking", "track"]
+            },
+            "description": "Track with all available options"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Track by Reference",
+      "item": [
+        {
+          "name": "Track by Reference Number",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/tracking/reference/REF123456",
+              "host": ["{{baseUrl}}"],
+              "path": ["tracking", "reference", "REF123456"]
+            },
+            "description": "Track a shipment by reference number"
+          }
+        },
+        {
+          "name": "Track by Reference with Filters",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/tracking/reference/REF123456?account=1234567&destinationPostalZipCode=M5V3A8",
+              "host": ["{{baseUrl}}"],
+              "path": ["tracking", "reference", "REF123456"],
+              "query": [
+                {
+                  "key": "account",
+                  "value": "1234567",
+                  "description": "Account number filter"
+                },
+                {
+                  "key": "destinationPostalZipCode",
+                  "value": "M5V3A8",
+                  "description": "Destination postal code"
+                }
+              ]
+            },
+            "description": "Track by reference with account and postal code filters"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Batch Track",
+      "item": [
+        {
+          "name": "Batch Track PINs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/tracking/pins?pins=329012345678,329012345679",
+              "host": ["{{baseUrl}}"],
+              "path": ["tracking", "pins"],
+              "query": [
+                {
+                  "key": "pins",
+                  "value": "329012345678,329012345679",
+                  "description": "Comma-separated PIN numbers (max 50)"
+                }
+              ]
+            },
+            "description": "Track multiple PINs using comma-separated values"
+          }
+        },
+        {
+          "name": "Batch Track with Options",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/tracking/pins?pins=329012345678,329012345679&pod=true&shipmentView=true",
+              "host": ["{{baseUrl}}"],
+              "path": ["tracking", "pins"],
+              "query": [
+                {
+                  "key": "pins",
+                  "value": "329012345678,329012345679",
+                  "description": "Comma-separated PIN numbers"
+                },
+                {
+                  "key": "pod",
+                  "value": "true",
+                  "description": "Include Proof of Delivery"
+                },
+                {
+                  "key": "shipmentView",
+                  "value": "true",
+                  "description": "Include detailed shipment view"
+                }
+              ]
+            },
+            "description": "Batch track with POD and detailed view"
+          }
+        }
+      ]
+    }
+  ]
+}
+

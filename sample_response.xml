@@ -1,0 +1,193 @@
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+    <s:Header>
+        <h:ResponseContext xmlns:h="http://purolator.com/pws/datatypes/v2"
+            xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+            <h:ResponseReference>test</h:ResponseReference>
+        </h:ResponseContext>
+    </s:Header>
+    <s:Body>
+        <TrackingByPinsOrReferencesResponse xmlns="http://purolator.com/pws/datatypes/v2"
+            xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+            <ResponseInformation>
+                <Errors />
+                <InformationalMessages i:nil="true" />
+            </ResponseInformation>
+            <SearchResults>
+                <SearchResult>
+                    <trackingId>335702383951</trackingId>
+                    <shipmentDateFrom i:nil="true" />
+                    <shipmentDateTo i:nil="true" />
+                    <status>FOUND</status>
+                    <type>PIN</type>
+                    <shipmentErrors />
+                    <Shipment>
+                        <shipmentPin>329702318141</shipmentPin>
+                        <status>
+                            <code>ATT</code>
+                            <description>Attention</description>
+                        </status>
+                        <shipmentCreated>2022-11-14</shipmentCreated>
+                        <pieceTotalCount>1</pieceTotalCount>
+                        <details>
+                            <reference1>ExternalTrack01</reference1>
+                            <reference2>ExternalTrack02</reference2>
+                            <reference3>ExternalTrack03</reference3>
+                            <reference4>ExternalTrack04</reference4>
+                            <reference5>ExternalTrack05</reference5>
+                            <returnShipment>false</returnShipment>
+                            <product>
+                                <code>000000000000000202</code>
+                                <description>Purolator Express</description>
+                            </product>
+                            <services />
+                            <shipper>
+                                <streetAddress1 i:nil="true" />
+                                <streetAddress2 i:nil="true" />
+                                <streetAddress3 i:nil="true" />
+                                <city>REPENTIGNY</city>
+                                <provinceState>QC</provinceState>
+                                <countryCode>CA</countryCode>
+                                <postalZipCode i:nil="true" />
+                            </shipper>
+                            <receiver>
+                                <streetAddress1 i:nil="true" />
+                                <streetAddress2 i:nil="true" />
+                                <streetAddress3 i:nil="true" />
+                                <city>MISSISSAUGA</city>
+                                <provinceState>ON</provinceState>
+                                <countryCode>CA</countryCode>
+                                <postalZipCode i:nil="true" />
+                            </receiver>
+                            <note i:nil="true" />
+                            <weight>
+                                <unit>LB</unit>
+                                <value>1.0</value>
+                            </weight>
+                        </details>
+                        <packages>
+                            <package>
+                                <pin>329702318141</pin>
+                                <status>
+                                    <code>ATT</code>
+                                    <description>Attention</description>
+                                    <subCode i:nil="true" />
+                                    <subDescription i:nil="true" />
+                                </status>
+                                <estimatedDeliveryDate>2022-11-18</estimatedDeliveryDate>
+                                <transitDays i:nil="true" />
+                                <packageCreated>2022-11-17</packageCreated>
+                                <packageReceived>2022-11-15 16:52:16</packageReceived>
+                                <lastEvent>
+                                    <dateTime>2022-11-17 10:48:28</dateTime>
+                                    <code>2300</code>
+                                    <reasonCode>ADHOC</reasonCode>
+                                    <description>Picked up by Purolator at
+                                        WISTERIA,TORONTO,ON,M1R4X8</description>
+                                    <terminal>507</terminal>
+                                    <routeId>B21</routeId>
+                                    <location>
+                                        <StreetAddress1>WISTERIA</StreetAddress1>
+                                        <StreetAddress2 i:nil="true" />
+                                        <City>TORONTO</City>
+                                        <provinceState>ON</provinceState>
+                                        <CountryCode>CA</CountryCode>
+                                        <PostalCode>M1R4X8</PostalCode>
+                                    </location>
+                                    <x12>
+                                        <AT701>X3</AT701>
+                                        <AT702>NS</AT702>
+                                    </x12>
+                                    <xreference i:nil="true" />
+                                </lastEvent>
+                                <details>
+                                    <references />
+                                    <services />
+                                    <weight>
+                                        <declaredUnit>LB</declaredUnit>
+                                        <declaredValue>1.0</declaredValue>
+                                        <actualUnit i:nil="true" />
+                                        <actualValue i:nil="true" />
+                                    </weight>
+                                    <holdForPickupLocationId i:nil="true" />
+                                    <deliveryDetails>
+                                        <name i:nil="true" />
+                                        <deliveryDateTime i:nil="true" />
+                                        <image i:nil="true" />
+                                        <locationCode i:nil="true" />
+                                        <locationDescription i:nil="true" />
+                                    </deliveryDetails>
+                                </details>
+                                <events>
+                                    <event>
+                                        <dateTime>2022-11-17 10:48:28</dateTime>
+                                        <code>2300</code>
+                                        <reasonCode>ADHOC</reasonCode>
+                                        <description>Picked up by Purolator at
+                                            WISTERIA,TORONTO,ON,M1R4X8</description>
+                                        <terminal>507</terminal>
+                                        <routeId>B21</routeId>
+                                        <location>
+                                            <StreetAddress1>WISTERIA</StreetAddress1>
+                                            <StreetAddress2 i:nil="true" />
+                                            <City>TORONTO</City>
+                                            <provinceState>ON</provinceState>
+                                            <CountryCode>CA</CountryCode>
+                                            <PostalCode>M1R4X8</PostalCode>
+                                        </location>
+                                        <x12>
+                                            <AT701>X3</AT701>
+                                            <AT702>NS</AT702>
+                                        </x12>
+                                        <xreference i:nil="true" />
+                                    </event>
+                                    <event>
+                                        <dateTime>2022-11-15 16:52:16</dateTime>
+                                        <code>9310</code>
+                                        <reasonCode>BREAKDOWN</reasonCode>
+                                        <description>Mechanical delay</description>
+                                        <terminal>511</terminal>
+                                        <routeId>456</routeId>
+                                        <location>
+                                            <StreetAddress1 i:nil="true" />
+                                            <StreetAddress2 i:nil="true" />
+                                            <City>MISSISSAUGA</City>
+                                            <provinceState>ON</provinceState>
+                                            <CountryCode>CA</CountryCode>
+                                            <PostalCode i:nil="true" />
+                                        </location>
+                                        <x12>
+                                            <AT701>AH</AT701>
+                                            <AT702>AI</AT702>
+                                        </x12>
+                                        <xreference i:nil="true" />
+                                    </event>
+                                    <event>
+                                        <dateTime>2022-11-14 13:26:33</dateTime>
+                                        <code>3010</code>
+                                        <reasonCode i:nil="true" />
+                                        <description>Shipment created - final manifest received</description>
+                                        <terminal>000</terminal>
+                                        <routeId i:nil="true" />
+                                        <location>
+                                            <StreetAddress1 i:nil="true" />
+                                            <StreetAddress2 i:nil="true" />
+                                            <City>MISSISSAUGA</City>
+                                            <provinceState>ON</provinceState>
+                                            <CountryCode>CA</CountryCode>
+                                            <PostalCode i:nil="true" />
+                                        </location>
+                                        <x12>
+                                            <AT701>XB</AT701>
+                                            <AT702>NS</AT702>
+                                        </x12>
+                                        <xreference i:nil="true" />
+                                    </event>
+                                </events>
+                            </package>
+                        </packages>
+                    </Shipment>
+                </SearchResult>
+            </SearchResults>
+        </TrackingByPinsOrReferencesResponse>
+    </s:Body>
+</s:Envelope>
