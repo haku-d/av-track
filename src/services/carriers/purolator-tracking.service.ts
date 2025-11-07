@@ -1,15 +1,17 @@
 import * as soap from 'soap';
 import { TrackingRequest, TrackingResponse } from '../../types/shipment-tracking.types';
 import { purolatorConfig } from '../../config/purolator.config';
-import { randomUUID } from 'crypto';
 import { transformTrackingResponse } from '../../utils/tracking-response-transformer';
 import { createInternalErrorResponse } from '../../utils/error-response';
 import { BaseTrackingService } from './base-tracking.service';
-
-interface PurolatorCredentials {
-  activationKey: string;
-  accountNumber: string;
-}
+import {
+  PurolatorCredentials,
+  getPurolatorSoapOptions,
+  getPurolatorNamespaceDeclarations,
+  createPurolatorRequestContext,
+  PUROLATOR_NAMESPACE_URI,
+  PUROLATOR_NAMESPACE_PREFIX
+} from '../../types/purolator-common.types';
 
 interface TrackingSearchCriteria {
   searches: {
@@ -52,23 +54,15 @@ export class PurolatorTrackingService extends BaseTrackingService {
     }
 
     try {
-      this.client = await soap.createClientAsync(this.wsdlUrl, {
-        endpoint: this.endpoint,
-        wsdl_options: {
-          namespaceArrayElements: false,
-        },
-        forceSoap12Headers: false,
-        envelopeKey: 'soapenv',
-      });
+      this.client = await soap.createClientAsync(this.wsdlUrl, getPurolatorSoapOptions(this.endpoint));
 
       // Configure namespace prefix mapping for proper body element qualification
       const wsdl = this.client.wsdl as any;
-      const nsURI = 'http://purolator.com/pws/datatypes/v2';
 
       if (!wsdl.definitions.namespaces) {
         wsdl.definitions.namespaces = {};
       }
-      wsdl.definitions.namespaces[nsURI] = 'typ';
+      wsdl.definitions.namespaces[PUROLATOR_NAMESPACE_URI] = PUROLATOR_NAMESPACE_PREFIX;
 
       // Intercept HTTP requests to add namespace prefixes to ALL elements
       const originalHttpClient = (this.client as any).httpClient;
@@ -121,7 +115,7 @@ export class PurolatorTrackingService extends BaseTrackingService {
       this.client.setSecurity(security);
 
       // Add namespace declarations to the envelope
-      this.client.wsdl.xmlnsInEnvelope = this._getNamespaceDeclarations();
+      this.client.wsdl.xmlnsInEnvelope = getPurolatorNamespaceDeclarations();
 
       // Add RequestContext header
       this._addRequestContextHeader();
@@ -134,24 +128,15 @@ export class PurolatorTrackingService extends BaseTrackingService {
     }
   }
 
-  private _getNamespaceDeclarations(): string {
-    return [
-      'xmlns:typ="http://purolator.com/pws/datatypes/v2"'
-    ].join(' ');
-  }
-
   private _addRequestContextHeader(): void {
     if (!this.client) return;
 
-    const requestContext = {
-      RequestContext: {
-        Version: purolatorConfig.version,
-        Language: purolatorConfig.language,
-        GroupID: purolatorConfig.groupId,
-        RequestReference: randomUUID(),
-        UserToken: this.credentials.activationKey,
-      }
-    };
+    const requestContext = createPurolatorRequestContext(
+      purolatorConfig.version,
+      purolatorConfig.language,
+      purolatorConfig.groupId,
+      this.credentials.activationKey
+    );
 
     this.client.addSoapHeader(requestContext);
   }
